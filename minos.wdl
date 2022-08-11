@@ -10,8 +10,7 @@ task minos_adjudicate {
 	input {
 		File ref
 		File reads
-		File vcf1
-		File vcf2
+		Array[File] vcfs
 
 		# runtime attributes
 		Int addldisk = 1
@@ -27,11 +26,14 @@ task minos_adjudicate {
 	String ref_basename = basename(ref)
 
 	command <<<
-		# softlinks don't seem to cut it here
 		set -eux -o pipefail
-		cp ~{ref} .
-		minos adjudicate --reads ~{reads} outdir ~{ref} ~{vcf1} ~{vcf2}
+		cp ~{ref} .  # softlinks don't seem to cut it here
+		minos adjudicate --reads ~{reads} outdir ~{ref} ~{sep=" " vcfs}
 	>>>
+
+	output {
+		Array[File] minos_outs = glob("outdir/*")
+	}
 	
 	runtime {
 		cpu: cpu
@@ -43,12 +45,11 @@ task minos_adjudicate {
 	}
 }
 
-workflow Minos {
+workflow Minos_Adjudicate {
 	input {
 		File ref
 		File reads  # should be a bam file
-		File vcf1
-		File vcf2
+		Array[File] vcfs
 		Array[File]? genome_index  # TODO: Does this actually make things faster?
 	}
 
@@ -56,8 +57,7 @@ workflow Minos {
 		input:
 			ref = ref,
 			reads = reads,
-			vcf1 = vcf1,
-			vcf2 = vcf2
+			vcfs = vcfs
 	}
 
 	meta {

@@ -1,0 +1,6 @@
+{
+  "Minos.ref": "../minos/tests/data/adjudicator/run.ref.fa",
+  "Minos.minos_adjudicate.retries": "1",
+  "Minos.vcfs": ["../minos/tests/data/adjudicator/run.calls.1.vcf", "../minos/tests/data/adjudicator/run.calls.2.vcf"],
+  "Minos.reads": "../minos/tests/data/adjudicator/run.bwa.bam"
+}

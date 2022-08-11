@@ -1,0 +1,10 @@
+version: 1.2
+workflows:
+  - subclass: WDL
+    primaryDescriptorPath: /minos.wdl
+    testParameterFiles:
+      - /vcf-to-gds/vcf-to-gds-terra.json
+      - /vcf-to-gds/vcf-to-gds-local.json
+    authors:
+      - orcid: 0000-0003-4896-1858
+    name: minos_adjudicate
